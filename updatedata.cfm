@@ -10,13 +10,20 @@
 </head>
 <body> 
 
-     <form action="" method="POST" onsubmit=updateDetails() id="editform">    
-        <label for="title" id="label-title"> TITLE</label>
-            <input type="text"  id="title" value="">
-        <label for="description" id="label-description"> DESCRIPTION</label>
-            <input type="text" id="description" value="">
+    <div class="row justify-content-center">
+        <h2 class="text-primary text-center mt-3">UPDATE DATA USING API</h2>
+     <form action="" method="POST" id="editform" class="border rounded shadow-sm bg-light form-inline">
+        <div class="form-group mb-2">    
+        <label for="title" id="label-title" class="form-label fw-bold"> TITLE</label>
+            <input type="text"  name="title" id="title" value="$('##title').val()">
+      
+        <label for="description" id="label-description" class="form-label fw-bold"> DESCRIPTION</label>
+            <input type="text" name="description" id="description" value=" $('##description').val()">
         <button type="submit" id="savebtn" class="btn btn-warning btn-sm">save</button>
+        </div>
+
     </form>
+    </div>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
     <script>
@@ -47,17 +54,27 @@
     var urlParams = new URLSearchParams(window.location.search);
         var id= urlParams.get('id');
        getitemdetails(id)
-        updateDetails(id)
-    //    $("##editform").submit(function(event) {
-    //     event.preventDefault(); // Prevent form submission
-    //      var urlParams = new URLSearchParams(window.location.search);
-    //     var id= urlParams.get('id');
-    //     updateDetails(id); // Pass ID to update function
-    // })
+        // updateDetails(id)
+       $("##editform").submit(function(event) {
+            event.preventDefault(); 
+        // Prevent form submission
+            var urlParams = new URLSearchParams(window.location.search);
+            var id= urlParams.get('id');
+            updateDetails(id); // Pass ID to update function
+            
+        })
+
+        //  $('##deletebtn').click(function() {
+        //         var id = $(this).data('id');
+        //         DeleteDetails(id);
+        //     });
+
+
+       
     });
 
 
-//    $('##editbtn').click(function(event) {
+//    $('##savebtn').click(function(event) {
 //             event.preventDefault();
 //             var title = $('##title').val();
 //             var description = $('##description').val();
@@ -68,21 +85,20 @@
 
         
         
-         function updateDetails(id) {
-            var updatedData={
+         function updateDetails(_id) {
+            var updatedData={ "testid":_id,
                 title:$("##title").val(),
                 description:$("##description").val()
             }
-
+           
             var url="http://127.0.0.1:8500/rest/hello/updateDetails/" ;
         $.ajax({
              url: url,
-            type: " POST",
-            dataType: "json",
-           
-            data:JSON.stringify(updatedData),
+            type: "PUT", 
+            data:updatedData,
+            contentType: "application/x-www-form-urlencoded",
             success: function(response) {
-                console.log(response.DATA)
+                // console.log(response.DATA)
                 alert("details updated successfully")
 
                
@@ -94,6 +110,7 @@
         });
     }
 
+       
     </script>
     </body>
 </html>
